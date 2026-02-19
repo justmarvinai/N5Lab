@@ -24,6 +24,7 @@ export default {
         gold: {
           DEFAULT: '#B8923A',  // Gilded accent (kintsugi gold)
           light: '#D4A94A',
+          dark: '#8A6D2B',     // <--- FIX: Diese Zeile hat gefehlt!
           muted: '#F0E6CE',
         },
         mist: {
