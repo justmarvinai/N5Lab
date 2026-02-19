@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties ──────────────────────────────────────────────── */
+:root {
+  --color-ink: #0F0E0C;
+  --color-washi: #F5F2EB;
+  --color-lacquer: #C8312B;
+  --color-gold: #B8923A;
+  --color-mist: #7A8C96;
+  --nav-height: 4rem;
+  --nav-height-mobile: 3.5rem;
+}
+
+/* ─── Base Reset & Defaults ──────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-washi text-ink font-body;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100dvh;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-washi-soft;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-washi-warm rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-mist-light;
+  }
+
+  /* Selection */
+  ::selection {
+    background-color: rgba(200, 49, 43, 0.15);
+    color: var(--color-ink);
+  }
+}
+
+/* ─── Component Utilities ────────────────────────────────────────────────── */
+@layer components {
+  /* Card variants */
+  .card {
+    @apply bg-white rounded-2xl shadow-card border border-washi-warm;
+  }
+
+  .card-washi {
+    @apply bg-washi rounded-2xl shadow-paper border border-washi-soft;
+  }
+
+  .card-ink {
+    @apply bg-ink rounded-2xl shadow-lifted text-washi;
+  }
+
+  /* Button base */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-body font-500 
+           rounded-xl transition-all duration-200 ease-spring
+           focus:outline-none focus-visible:ring-2 focus-visible:ring-lacquer 
+           focus-visible:ring-offset-2 select-none cursor-pointer;
+  }
+
+  .btn-primary {
+    @apply btn bg-lacquer text-white px-5 py-2.5 text-sm
+           hover:bg-lacquer-light active:bg-lacquer-dark
+           shadow-sm hover:shadow-glow-red;
+  }
+
+  .btn-secondary {
+    @apply btn bg-washi-soft text-ink px-5 py-2.5 text-sm
+           hover:bg-washi-warm active:bg-washi border border-washi-warm;
+  }
+
+  .btn-ghost {
+    @apply btn text-ink-muted px-4 py-2 text-sm
+           hover:bg-washi-soft hover:text-ink;
+  }
+
+  .btn-ink {
+    @apply btn bg-ink text-washi px-5 py-2.5 text-sm
+           hover:bg-ink-soft active:bg-ink-muted;
+  }
+
+  /* Kana display */
+  .kana {
+    @apply font-japanese;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    @apply h-1.5 rounded-full bg-washi-warm overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full rounded-full bg-lacquer transition-all duration-700 ease-spring;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-body font-500;
+  }
+
+  .badge-lacquer {
+    @apply badge bg-lacquer-muted text-lacquer-dark;
+  }
+
+  .badge-gold {
+    @apply badge bg-gold-muted text-gold-dark;
+  }
+
+  .badge-moss {
+    @apply badge bg-moss-muted text-moss;
+  }
+
+  .badge-mist {
+    @apply badge bg-mist-soft text-mist;
+  }
+
+  /* XP pill */
+  .xp-pill {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full 
+           bg-gold-muted text-gold-dark text-xs font-mono font-500;
+  }
+
+  /* Divider with text */
+  .divider-text {
+    @apply flex items-center gap-3 text-mist text-xs font-mono uppercase tracking-widest;
+  }
+  .divider-text::before,
+  .divider-text::after {
+    content: '';
+    @apply flex-1 h-px bg-washi-warm;
+  }
+
+  /* Nav active indicator */
+  .nav-active-dot {
+    @apply absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 
+           rounded-full bg-lacquer;
+  }
+
+  /* Grain overlay for cards */
+  .grain-overlay {
+    position: relative;
+    overflow: hidden;
+  }
+  .grain-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    border-radius: inherit;
+  }
+}
+
+/* ─── Utility Layer ──────────────────────────────────────────────────────── */
+@layer utilities {
+  .font-500 {
+    font-weight: 500;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Smooth transitions for interactive elements */
+  .transition-spring {
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Tap highlight removal on mobile */
+  .no-tap-highlight {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Safe area padding for mobile */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 1rem);
+  }
+  
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+}
