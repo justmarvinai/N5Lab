@@ -1,16 +1,22 @@
+/**
+ * main.jsx
+ * Entry point. Wraps the App in Providers.
+ */
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import App from './App.jsx'
-import { LearningProvider } from './context/LearningContext.jsx'
-import './index.css'
+import App from './App'
+import { LearningProvider } from './context/LearningContext'
+import './index.css' // Stellt sicher, dass Tailwind geladen wird
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <LearningProvider>
+    {/* 1. Context Provider für den globalen State (XP, Level, Settings) */}
+    <LearningProvider>
+      {/* 2. Router für die Navigation */}
+      <BrowserRouter>
         <App />
-      </LearningProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+      </BrowserRouter>
+    </LearningProvider>
+  </React.StrictMode>,
 )

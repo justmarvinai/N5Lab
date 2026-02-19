@@ -1,9 +1,5 @@
 /**
  * components/settings/SettingsModal.jsx
- * ─────────────────────────────────────────────────────────────────────────────
- * Slides up from bottom (mobile) / centered modal (desktop).
- * Sections: AI Sensei setup · Progress data · App info
- * ─────────────────────────────────────────────────────────────────────────────
  */
 
 import React, { useState, useRef, useCallback } from 'react'
@@ -23,11 +19,11 @@ import { useLearning } from '../../context/LearningContext'
 
 function StatusBadge({ status }) {
   const cfg = {
-    empty:    { cls: 'text-mist',    Icon: null,         label: 'Not set'   },
-    checking: { cls: 'text-gold',    Icon: Loader2,      label: 'Checking…', spin: true },
-    valid:    { cls: 'text-moss',    Icon: CheckCircle2, label: 'Verified ✓' },
-    saved:    { cls: 'text-moss',    Icon: CheckCircle2, label: 'Active ✓'  },
-    error:    { cls: 'text-lacquer', Icon: AlertCircle,  label: 'Invalid'   },
+    empty: { cls: 'text-mist', Icon: null, label: 'Not set' },
+    checking: { cls: 'text-gold', Icon: Loader2, label: 'Checking…', spin: true },
+    valid: { cls: 'text-moss', Icon: CheckCircle2, label: 'Verified ✓' },
+    saved: { cls: 'text-moss', Icon: CheckCircle2, label: 'Active ✓' },
+    error: { cls: 'text-lacquer', Icon: AlertCircle, label: 'Invalid' },
   }[status] ?? { cls: 'text-mist', label: '' }
   const { cls, Icon, label, spin } = cfg
   return (
@@ -97,11 +93,11 @@ function ModelDropdown({ value, onChange }) {
 export default function SettingsModal({ isOpen, onClose }) {
   const { exportData, importData, resetProgress } = useLearning()
 
-  const [key,       setKey]       = useState(() => getApiKey() ?? '')
-  const [showKey,   setShowKey]   = useState(false)
-  const [status,    setStatus]    = useState(() => hasApiKey() ? 'saved' : 'empty')
-  const [keyErr,    setKeyErr]    = useState('')
-  const [model,     setModel]     = useState(() => getSelectedModel())
+  const [key, setKey] = useState(() => getApiKey() ?? '')
+  const [showKey, setShowKey] = useState(false)
+  const [status, setStatus] = useState(() => hasApiKey() ? 'saved' : 'empty')
+  const [keyErr, setKeyErr] = useState('')
+  const [model, setModel] = useState(() => getSelectedModel())
   const [importMsg, setImportMsg] = useState('')
   const fileRef = useRef(null)
 

@@ -4,24 +4,24 @@
  */
 
 const API_KEY_STORAGE = 'n5lab_groq_key'
-const MODEL_STORAGE   = 'n5lab_groq_model'
-const GROQ_URL        = 'https://api.groq.com/openai/v1/chat/completions'
+const MODEL_STORAGE = 'n5lab_groq_model'
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
 
 export const DEFAULT_MODEL = 'llama-3.1-8b-instant'
 
 export const AVAILABLE_MODELS = [
   { id: 'llama-3.1-8b-instant', label: 'Llama 3.1 8B', description: 'Fast · Best for everyday questions', badge: 'Recommended' },
-  { id: 'llama3-70b-8192',      label: 'Llama 3 70B',  description: 'Smarter · Better grammar explanations', badge: 'Powerful' },
-  { id: 'gemma2-9b-it',         label: 'Gemma 2 9B',   description: 'Good Japanese understanding', badge: 'Balanced' },
+  { id: 'llama3-70b-8192', label: 'Llama 3 70B', description: 'Smarter · Better grammar explanations', badge: 'Powerful' },
+  { id: 'gemma2-9b-it', label: 'Gemma 2 9B', description: 'Good Japanese understanding', badge: 'Balanced' },
 ]
 
 // Storage helpers
-export const getApiKey        = () => { try { return localStorage.getItem(API_KEY_STORAGE) } catch { return null } }
-export const saveApiKey       = k  => { try { localStorage.setItem(API_KEY_STORAGE, k.trim()) } catch {} }
-export const clearApiKey      = () => { try { localStorage.removeItem(API_KEY_STORAGE) } catch {} }
-export const hasApiKey        = () => { const k = getApiKey(); return !!(k && k.length > 10) }
+export const getApiKey = () => { try { return localStorage.getItem(API_KEY_STORAGE) } catch { return null } }
+export const saveApiKey = k => { try { localStorage.setItem(API_KEY_STORAGE, k.trim()) } catch { } }
+export const clearApiKey = () => { try { localStorage.removeItem(API_KEY_STORAGE) } catch { } }
+export const hasApiKey = () => { const k = getApiKey(); return !!(k && k.length > 10) }
 export const getSelectedModel = () => { try { return localStorage.getItem(MODEL_STORAGE) ?? DEFAULT_MODEL } catch { return DEFAULT_MODEL } }
-export const saveSelectedModel = id => { try { localStorage.setItem(MODEL_STORAGE, id) } catch {} }
+export const saveSelectedModel = id => { try { localStorage.setItem(MODEL_STORAGE, id) } catch { } }
 
 // System prompts
 const BASE = `You are N5Lab-Sensei (先生), a warm and encouraging Japanese tutor for JLPT N5 beginners.
@@ -86,8 +86,8 @@ export async function validateApiKey(key) {
       body: JSON.stringify({ model: DEFAULT_MODEL, messages: [{ role: 'user', content: 'Hi' }], max_tokens: 5 }),
     })
     if (res.status === 401) return { valid: false, error: 'Invalid API key — double-check and try again.' }
-    if (res.status === 429) return { valid: true,  warning: 'Rate limited, but key is valid!' }
-    if (!res.ok)            return { valid: false, error: `Server error (${res.status})` }
+    if (res.status === 429) return { valid: true, warning: 'Rate limited, but key is valid!' }
+    if (!res.ok) return { valid: false, error: `Server error (${res.status})` }
     return { valid: true }
   } catch { return { valid: false, error: 'Network error — check your connection.' } }
 }
@@ -121,7 +121,7 @@ export async function streamChat(messages, onChunk, { model, temperature = 0.75,
       try {
         const delta = JSON.parse(t.slice(6))?.choices?.[0]?.delta?.content
         if (delta) onChunk(delta, false)
-      } catch {}
+      } catch { }
     }
   }
   onChunk('', true)
@@ -129,8 +129,8 @@ export async function streamChat(messages, onChunk, { model, temperature = 0.75,
 
 export function friendlyError(err) {
   const m = err?.message ?? String(err)
-  if (m === 'NO_API_KEY')   return 'No API key set — add your Groq key in Settings ⚙️'
-  if (m === 'INVALID_KEY')  return 'API key rejected — check it in Settings ⚙️'
+  if (m === 'NO_API_KEY') return 'No API key set — add your Groq key in Settings ⚙️'
+  if (m === 'INVALID_KEY') return 'API key rejected — check it in Settings ⚙️'
   if (m === 'RATE_LIMITED') return 'Groq rate limit hit — wait a moment and try again 🙏'
   return m || 'Something went wrong.'
 }

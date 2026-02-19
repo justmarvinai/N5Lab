@@ -1,17 +1,5 @@
 /**
  * components/ai/ChatSensei.jsx
- * ─────────────────────────────────────────────────────────────────────────────
- * AI Sensei — full chat + roleplay interface.
- *
- * Design concept: "Ancient scroll unrolling" — the panel has an ink-dark header,
- * washi paper body, gold Sensei avatar. Streaming text appears like calligraphy
- * being brushed. Roleplay scenarios are picked with a visual card grid.
- *
- * Props:
- *   lessonContext  {object|null}   — { moduleTitle, lessonTitle, lessonType, topic }
- *   initialMode    {'tutor'|'roleplay'}
- *   onClose        {Function|null}
- * ─────────────────────────────────────────────────────────────────────────────
  */
 
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
@@ -240,8 +228,8 @@ function ModeTabs({ mode, onChange }) {
   return (
     <div className="flex gap-1 bg-washi-soft rounded-2xl p-1">
       {[
-        { id: 'tutor',    label: 'Ask Sensei', Icon: Sparkles },
-        { id: 'roleplay', label: 'Roleplay',   Icon: MessagesSquare },
+        { id: 'tutor', label: 'Ask Sensei', Icon: Sparkles },
+        { id: 'roleplay', label: 'Roleplay', Icon: MessagesSquare },
       ].map(({ id, label, Icon }) => (
         <button
           key={id}
@@ -266,19 +254,19 @@ function ModeTabs({ mode, onChange }) {
 // ─── Main ChatSensei ──────────────────────────────────────────────────────────
 
 export default function ChatSensei({ lessonContext = null, initialMode = 'tutor', onClose }) {
-  const [mode,          setMode]          = useState(initialMode)
-  const [scenario,      setScenario]      = useState('airport')
+  const [mode, setMode] = useState(initialMode)
+  const [scenario, setScenario] = useState('airport')
   const [roleplayReady, setRoleplayReady] = useState(false)
-  const [settingsOpen,  setSettingsOpen]  = useState(false)
-  const [input,         setInput]         = useState('')
-  const inputRef  = useRef(null)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [input, setInput] = useState('')
+  const inputRef = useRef(null)
   const bottomRef = useRef(null)
   const configured = hasApiKey()
 
   const { messages, isStreaming, error, sendMessage, startRoleplay, clearChat, suggestions, streamingId } = useChat({
-    mode:         mode === 'roleplay' && roleplayReady ? 'roleplay' : 'tutor',
+    mode: mode === 'roleplay' && roleplayReady ? 'roleplay' : 'tutor',
     lessonContext: mode === 'tutor' ? lessonContext : null,
-    scenarioId:   scenario,
+    scenarioId: scenario,
   })
 
   // Auto-scroll
